@@ -1,0 +1,21 @@
+{
+  "_comment": "Configuración de servidores MCP consumidos por el grafo. 'enabled' permite activar/desactivar cada servidor sin borrar su definición. 'requires_keys' documenta qué variables de entorno habilitan más herramientas (todas OPCIONALES: sin claves ya funcionan 21 herramientas públicas).",
+  "servers": {
+    "osint-mcp-server": {
+      "enabled": true,
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "osint-mcp-server"],
+      "requires_keys": ["SHODAN_API_KEY", "VT_API_KEY", "ST_API_KEY", "CENSYS_API_ID", "CENSYS_API_SECRET"],
+      "notes": "badchars/osint-mcp-server (MIT, TypeScript, stdio). 37 herramientas / 12 fuentes; 21 funcionan SIN clave: DNS, WHOIS/RDAP, crt.sh, GeoIP, BGP/ASN, Wayback, HackerTarget, descubrimiento de tenant M365. Las claves activan Shodan, VirusTotal, SecurityTrails y Censys."
+    },
+    "openosint": {
+      "enabled": false,
+      "transport": "stdio",
+      "command": "openosint",
+      "args": ["--mcp"],
+      "requires_keys": [],
+      "notes": "OpenOSINT (Python, 16 herramientas). Alternativa/segundo servidor: instalar aparte con 'pip install openosint'. Ajustar command/args según su documentación."
+    }
+  }
+}

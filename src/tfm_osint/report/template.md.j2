@@ -1,0 +1,28 @@
+# Informe OSINT — {{ target | e }}
+
+> **Objetivo:** `{{ target | e }}`<br>
+> **Generado:** {{ date }}<br>
+> **Motor LLM:** {{ usage.provider }} ({{ usage.model }})<br>
+> **Aviso:** Informe elaborado con fuentes públicas para investigación de seguridad autorizada.
+
+---
+
+{{ risk_summary }}
+
+{{ legend }}
+
+{{ body | e }}
+
+---
+
+## Metadatos de ejecución
+
+| Métrica | Valor |
+|---|---|
+| Herramientas OSINT invocadas | {{ usage.tool_calls }} |
+| Tokens de entrada | {{ usage.input_tokens }} |
+| Tokens de salida | {{ usage.output_tokens }} |
+| Coste estimado (USD) | {{ "%.4f"|format(usage.cost_usd) }} |
+| Latencia (s) | {{ usage.latency_s }} |
+| IOCs identificados | {{ n_iocs }} |
+| Afirmaciones verificadas | {{ n_verified }} / {{ n_findings }} |

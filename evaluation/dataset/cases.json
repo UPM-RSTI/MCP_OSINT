@@ -1,0 +1,196 @@
+{
+  "_comment": "Dataset de evaluación con ground-truth curado manualmente y verificado con llamadas reales a las herramientas MCP (whois_domain/whois_ip/geoip_lookup/dns_email_security) — no son valores inventados. 'expected_iocs' son valores que un buen informe DEBERÍA identificar; 'benign' marca casos control donde no debería reportarse riesgo alto (para medir falsos positivos). Los casos 'benign: false' con id 'case-notable-*' no son maliciosos — son infraestructura legítima con una debilidad de configuración real y verificable (típicamente DMARC sin aplicar, p=none), para comprobar que el pipeline sabe señalar un hallazgo genuino sin sobrealarmar ni tratarlo como compromiso.",
+  "cases": [
+    {
+      "id": "case-benign-example",
+      "target": "example.com",
+      "query": "Investiga example.com y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["example.com"],
+      "expected_facts": [
+        "example.com es un dominio de documentación reservado por IANA",
+        "No presenta indicadores de compromiso significativos"
+      ]
+    },
+    {
+      "id": "case-benign-iana",
+      "target": "iana.org",
+      "query": "Perfil OSINT de iana.org.",
+      "benign": true,
+      "expected_iocs": ["iana.org"],
+      "expected_facts": [
+        "iana.org pertenece a la Internet Assigned Numbers Authority",
+        "Dispone de certificados TLS válidos en registros de transparencia"
+      ]
+    },
+    {
+      "id": "case-benign-google-dns",
+      "target": "8.8.8.8",
+      "query": "Investiga la IP 8.8.8.8 y evalúa si presenta riesgo.",
+      "benign": true,
+      "expected_iocs": ["8.8.8.8"],
+      "expected_facts": [
+        "8.8.8.8 es el servicio de DNS público de Google LLC",
+        "Pertenece al ASN AS15169 (Google)",
+        "El dominio asociado dns.google tiene una política SPF restrictiva (v=spf1 -all)",
+        "No hay actividad maliciosa asociada"
+      ]
+    },
+    {
+      "id": "case-benign-cloudflare-dns-ip",
+      "target": "1.1.1.1",
+      "query": "Investiga la IP 1.1.1.1 y evalúa si presenta riesgo.",
+      "benign": true,
+      "expected_iocs": ["1.1.1.1"],
+      "expected_facts": [
+        "1.1.1.1 es el resolver de DNS público 1.1.1.1 operado por Cloudflare, Inc. (proyecto conjunto con APNIC)",
+        "Pertenece al ASN AS13335 (Cloudflare)",
+        "El bloque 1.1.1.0/24 está asignado a APNIC Research and Development (APNIC-LABS)",
+        "La geolocalización IP de un servicio anycast como este no refleja una ubicación física real de un atacante — es un dato informativo, no un indicio de riesgo",
+        "No hay actividad maliciosa asociada"
+      ]
+    },
+    {
+      "id": "case-benign-quad9-dns-ip",
+      "target": "9.9.9.9",
+      "query": "Investiga la IP 9.9.9.9 y evalúa si presenta riesgo.",
+      "benign": true,
+      "expected_iocs": ["9.9.9.9"],
+      "expected_facts": [
+        "9.9.9.9 es el resolver de DNS público de Quad9, una fundación sin ánimo de lucro centrada en seguridad",
+        "Pertenece al ASN AS19281 (Quad9)",
+        "El bloque 9.9.9.0/24 está registrado a nombre de Quad9 (RIR: ARIN)",
+        "No hay actividad maliciosa asociada"
+      ]
+    },
+    {
+      "id": "case-benign-cloudflare-com",
+      "target": "cloudflare.com",
+      "query": "Investiga cloudflare.com y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["cloudflare.com"],
+      "expected_facts": [
+        "cloudflare.com está registrado por Cloudflare, Inc. desde 2009",
+        "Usa nameservers propios (NS3-NS7.CLOUDFLARE.COM)",
+        "Tiene una política SPF restrictiva (-all, hard fail) y DMARC en modo p=reject (aplicado, la configuración más estricta)",
+        "No presenta indicadores de compromiso"
+      ]
+    },
+    {
+      "id": "case-benign-mozilla-org",
+      "target": "mozilla.org",
+      "query": "Investiga mozilla.org y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["mozilla.org"],
+      "expected_facts": [
+        "mozilla.org está registrado por MarkMonitor Inc. desde 1998",
+        "Usa nameservers de Akamai (ns1-240.akam.net y similares)",
+        "DMARC está en modo p=reject (aplicado)",
+        "El SPF termina en ~all (soft fail), más permisivo que un hard fail pero no es una señal de compromiso"
+      ]
+    },
+    {
+      "id": "case-benign-wikipedia-org",
+      "target": "wikipedia.org",
+      "query": "Investiga wikipedia.org y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["wikipedia.org"],
+      "expected_facts": [
+        "wikipedia.org está registrado por MarkMonitor Inc. desde 2001",
+        "Usa nameservers propios de Wikimedia (ns0/ns1/ns2.wikimedia.org)",
+        "No presenta indicadores de compromiso"
+      ]
+    },
+    {
+      "id": "case-benign-github-com",
+      "target": "github.com",
+      "query": "Investiga github.com y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["github.com"],
+      "expected_facts": [
+        "github.com está registrado por MarkMonitor Inc. desde 2007",
+        "Usa nameservers de NS1 y AWS Route 53",
+        "El registro SPF incluye numerosos proveedores de correo legítimos (Outlook, Google, Zendesk, Salesforce, SendGrid, Mailchimp) — normal para una organización grande con muchas integraciones, no un indicio de riesgo",
+        "El SPF termina en ~all (soft fail)"
+      ]
+    },
+    {
+      "id": "case-benign-w3-org",
+      "target": "w3.org",
+      "query": "Investiga w3.org y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["w3.org"],
+      "expected_facts": [
+        "w3.org (World Wide Web Consortium) está registrado por Gandi SAS desde 1994",
+        "Usa nameservers de Cloudflare (jamie.ns.cloudflare.com, pranab.ns.cloudflare.com)",
+        "DMARC está en modo p=reject (aplicado)",
+        "No presenta indicadores de compromiso"
+      ]
+    },
+    {
+      "id": "case-benign-apple-com",
+      "target": "apple.com",
+      "query": "Investiga apple.com y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["apple.com"],
+      "expected_facts": [
+        "apple.com está registrado por Nom-iq Ltd. dba Com Laude desde 1987",
+        "Usa nameservers propios (A-D.NS.APPLE.COM)",
+        "DMARC está en modo p=quarantine con sp=reject para subdominios — aplicado, aunque menos estricto que p=reject en el dominio raíz",
+        "No presenta indicadores de compromiso"
+      ]
+    },
+    {
+      "id": "case-authorized-scan-scanme",
+      "target": "scanme.nmap.org",
+      "query": "Investiga scanme.nmap.org y elabora un informe OSINT.",
+      "benign": true,
+      "expected_iocs": ["scanme.nmap.org", "45.33.32.156"],
+      "expected_facts": [
+        "scanme.nmap.org es el objetivo de pruebas oficial y explícitamente autorizado del proyecto Nmap para practicar escaneo de puertos",
+        "Resuelve a la IP 45.33.32.156",
+        "La consulta RDAP/WHOIS estándar del dominio puede fallar (error 400) — es una limitación conocida del servicio, no un indicio de nada oculto",
+        "No presenta indicadores de compromiso"
+      ]
+    },
+    {
+      "id": "case-notable-ietf-dmarc-none",
+      "target": "ietf.org",
+      "query": "Investiga ietf.org y evalúa su postura de seguridad de correo.",
+      "benign": false,
+      "expected_iocs": ["ietf.org"],
+      "expected_facts": [
+        "ietf.org está registrado por Cloudflare, Inc. desde 1995, con nameservers de Cloudflare",
+        "Su política DMARC es p=none — existe el registro pero no se aplica ningún rechazo/cuarentena de correo no autorizado, una debilidad real de configuración",
+        "El SPF termina en ~all (soft fail)",
+        "Esto es una debilidad de configuración de correo, NO un indicio de compromiso ni de actividad maliciosa — la IETF es una organización legítima"
+      ]
+    },
+    {
+      "id": "case-notable-debian-dmarc-none",
+      "target": "debian.org",
+      "query": "Investiga debian.org y evalúa su postura de seguridad de correo.",
+      "benign": false,
+      "expected_iocs": ["debian.org"],
+      "expected_facts": [
+        "debian.org está registrado por Gandi SAS desde 1999",
+        "Su política DMARC es p=none — existe el registro pero no se aplica ningún rechazo/cuarentena, una debilidad real de configuración",
+        "El SPF termina en ~all (soft fail)",
+        "Esto es una debilidad de configuración de correo, NO un indicio de compromiso — el Proyecto Debian es una organización legítima"
+      ]
+    },
+    {
+      "id": "case-notable-python-dmarc-none",
+      "target": "python.org",
+      "query": "Investiga python.org y evalúa su postura de seguridad de correo.",
+      "benign": false,
+      "expected_iocs": ["python.org"],
+      "expected_facts": [
+        "python.org está registrado por Gandi SAS desde 1995, con nameservers de AWS Route 53",
+        "Su política DMARC es p=none con sp=none — ni el dominio raíz ni los subdominios aplican rechazo/cuarentena, una debilidad real de configuración",
+        "El SPF termina en ~all (soft fail)",
+        "Esto es una debilidad de configuración de correo, NO un indicio de compromiso — la Python Software Foundation es una organización legítima"
+      ]
+    }
+  ]
+}

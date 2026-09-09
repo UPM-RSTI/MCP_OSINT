@@ -1,0 +1,10 @@
+# Tema del frontend. Azul #0072B2 (Okabe-Ito), paleta consistente con el resto del TFM.
+[theme]
+primaryColor = "#0072B2"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F1F4F8"
+textColor = "#16233A"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
